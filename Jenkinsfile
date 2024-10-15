@@ -1,29 +1,30 @@
-pipeline {
-  agent any
-  stages{
-      stage("one"){
-          steps{
-              echo 'step 1'
-              sleep 3
-          }
-      }
-      stage("two"){
-          steps{
-              echo 'step 2'
-              sleep 9
-          }
-      }
-      stage("three"){
-          steps{
-              echo 'step 3'
-              sleep 5
-          }
-      }
-  }
+pipeline{
 
-  post{
-    always{
-        echo 'This pipeline is completed..'
-    }
-  }
+agent any
+
+tools{
+maven 'Maven 3.6.3'
+}
+
+stages{
+stage('build'){
+steps{
+echo 'compile maven app'
+sh 'mvn compile'
+}
+}
+  stage('test'){
+steps{
+echo 'test maven app'
+sh 'mvn clean test'
+}
+}
+stage('package'){
+steps{
+echo 'package maven app'
+sh 'mvn package -DskipTests'
+}
+}
+}
+
 }
