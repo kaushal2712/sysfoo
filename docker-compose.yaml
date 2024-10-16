@@ -1,0 +1,5 @@
+services:
+  sysfoo:
+    image: xxxxxx/sysfoo:latest
+    ports:
+      - 8888:8080
