@@ -63,6 +63,12 @@ pipeline {
       }
     }
 
+    stage('deploy to dev') {
+      steps {
+        echo 'deploying to dev'
+      }
+    }
+
   }
   tools {
     maven 'Maven 3.6.3'
