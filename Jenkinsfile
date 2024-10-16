@@ -28,15 +28,35 @@ pipeline {
     }
 
     stage('package') {
-      agent {
-        docker {
-          image 'maven:3.9.6-eclipse-temurin-17'
+      parallel {
+        stage('package') {
+          agent {
+            docker {
+              image 'maven:3.9.6-eclipse-temurin-17'
+            }
+
+          }
+          steps {
+            echo 'package maven app'
+            sh 'mvn package -DskipTests'
+          }
         }
 
-      }
-      steps {
-        echo 'package maven app'
-        sh 'mvn package -DskipTests'
+        stage('DockerB&P') {
+          steps {
+            script {
+              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                def commitHash = env.GIT_COMMIT.take(7)
+                def dockerImage = docker.build("kaushal2712/sysfoo:${commitHash}", "./")
+                dockerImage.push()
+                dockerImage.push("latest")
+                dockerImage.push("dev")
+              }
+            }
+
+          }
+        }
+
       }
     }
 
