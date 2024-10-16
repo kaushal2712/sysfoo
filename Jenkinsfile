@@ -64,8 +64,12 @@ pipeline {
     }
 
     stage('deploy to dev') {
+      when {
+        branch 'main'
+      }
       steps {
         echo 'deploying to dev'
+        sh 'docker compose up -d'
       }
     }
 
