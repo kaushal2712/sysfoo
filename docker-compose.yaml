@@ -1,0 +1,5 @@
+services:
+  sysfoo:
+    image: kaushal2712/sysfoo:latest
+    ports:
+      - 8888:8080
